@@ -13,7 +13,7 @@
 #endif
 #define WHITE 1
 #define BLACK 0
-#define SSD1306_I2C_ADDRESS   0x3D	// 011110+SA0+RW - 0x3C or 0x3D
+#define SSD1306_I2C_ADDRESS   0x3D  // 011110+SA0+RW - 0x3C or 0x3D
 // Address for 128x32 is 0x3C
 // Address for 128x64 is 0x3D (default) or 0x3C (if SA0 is grounded)
 #define SSD1306_SETCONTRAST 0x81
@@ -64,6 +64,7 @@
 
 class Adafruit_SSD1306 : public Adafruit_GFX {
     public:
+    Adafruit_SSD1306(int8_t DC, int8_t RST, int8_t CS); // NOTE, hardware SPI only!
     Adafruit_SSD1306(int8_t RST);
     
     void begin(uint8_t switchvcc = SSD1306_SWITCHCAPVCC, uint8_t i2caddr = SSD1306_I2C_ADDRESS);
@@ -90,7 +91,9 @@ class Adafruit_SSD1306 : public Adafruit_GFX {
 
  private:
   int8_t _i2caddr, _vccstate, sid, sclk, dc, rst, cs;
+  void fastSPIwrite(uint8_t c);
 
+  boolean hwSPI;
   inline void drawFastVLineInternal(int16_t x, int16_t y, int16_t h, uint16_t color) __attribute__((always_inline));
   inline void drawFastHLineInternal(int16_t x, int16_t y, int16_t w, uint16_t color) __attribute__((always_inline));
 
